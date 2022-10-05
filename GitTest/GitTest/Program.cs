@@ -33,10 +33,46 @@ public class TestGit
     /// </summary>
     void RunSolution()
     {
-        while (true)
+        bool isStillRunning = true;
+        while (isStillRunning)
         {
             SelectTypeOfCalculation();
+            isStillRunning = CheckIfUserWantsToContinue();
         }
+    }
+    bool CheckIfUserWantsToContinue()
+    {
+        bool isStillRunning = true;
+        Console.WriteLine("Do you still whish to use this app :: yes ? no ?");
+        string? choice = "";
+        while (choice == "")
+        {
+            choice = Console.ReadLine();
+
+            if (choice == "")
+            {
+                Console.WriteLine("Please Say Yes Or No");
+            }
+            else
+            {
+                choice.ToLower().Trim();
+                if (choice[0].ToString() == "y")
+                {
+                    Console.WriteLine("Well as you wish, lets go !! ");
+                }
+                else if (choice[0].ToString() == "n")
+                {
+                    Console.WriteLine("Well as you wish, lets go !! ");
+                    isStillRunning = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please Say Yes Or No");
+                    choice = "";
+                }
+            }
+        }
+        return isStillRunning;
     }
 
     /// <summary>
