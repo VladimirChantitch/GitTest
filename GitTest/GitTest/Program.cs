@@ -80,10 +80,17 @@ public class TestGit
     /// </summary>
     void SelectTypeOfCalculation()
     {
-        Console.WriteLine("Which type of calculation do you want \r");
-        Console.WriteLine("-->   Press 1 for power");
-        int input = Convert.ToInt32(Console.ReadLine());
-        switch (input)
+        bool isInputRight = false;
+        ValidDigit validDigit = new ValidDigit();
+        while (!isInputRight) 
+        {
+            Console.WriteLine("Which type of calculation do you want \r");
+            Console.WriteLine("-->   Press 1 for power");
+            validDigit = GetDigitFromConsole();
+            isInputRight = validDigit.isValid;
+        }
+
+        switch (Convert.ToInt32(validDigit.line))
         {
             case 1:
                 CalculatePower();
@@ -96,23 +103,64 @@ public class TestGit
     /// </summary>
     void CalculatePower()
     {
-        Console.WriteLine("Pleas enter an int for which you need the power");
-        string? root_string = Console.ReadLine();
+        bool isInputRight = false;
+        ValidDigit validDigit = new ValidDigit();
+        while (!isInputRight)
+        {
+            Console.WriteLine("Pleas enter an int for which you need the power");
+            validDigit = GetDigitFromConsole();
+            isInputRight = validDigit.isValid;
+        }
 
+        string root_string = validDigit.line;
         string[] spits = root_string.Split(".");
+
         if (spits.Length > 1)
         {
             Console.WriteLine("You've entered a float");
-            Double squared = Convert.ToDouble(root_string);
+            Double squared = Convert.ToDouble((root_string));
             squared *= squared;
             Console.WriteLine("The square of" + root_string + " is " + squared);
         }
         else
         {
             Console.WriteLine("You've entered an int");
-            int squared = Convert.ToInt32(root_string);
+            int squared = Convert.ToInt32((root_string));
             squared *= squared;
             Console.WriteLine("The square of" + root_string + " is " + squared);
         }       
+    }
+
+    private ValidDigit GetDigitFromConsole()
+    {
+        string readLine = "";
+        ValidDigit validDigit;
+        try
+        {
+            readLine = Console.ReadLine();
+            Double input = Convert.ToDouble(readLine);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Please enter a number");
+            return new ValidDigit(readLine, false);
+        }
+        return new ValidDigit(readLine, true);
+    }
+}
+
+public class ValidDigit
+{
+    public string line;
+    public bool isValid;
+    public ValidDigit() { line = ""; this.isValid = false; }
+    public ValidDigit (string line, bool isValid)
+    {
+        this.line = line;
+        this.isValid = isValid;
+        if (line == null)
+        {
+            line = "";
+        }
     }
 }
